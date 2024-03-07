@@ -50,7 +50,7 @@ public class StartScene {
         outsideWrapper.setAlignment(Pos.CENTER);
 
 
-        startScene = new Scene(outsideWrapper, 800, 800);
+        startScene = new Scene(outsideWrapper, 1300, 1000);
 
     }
 
@@ -99,14 +99,14 @@ public class StartScene {
     private BorderPane setIconWrapper(){
 
         iconWrapper = new BorderPane();
-        Image spade = new Image("/spade.png");
+        Image spade = new Image("/spades.png");
         ImageView imageViewSpade = new ImageView(spade);
         imageViewSpade.setEffect(dropShadow);
         imageViewSpade.setFitWidth(100);
         imageViewSpade.setFitHeight(100);
         imageViewSpade.setPreserveRatio(true);
 
-        Image diamond = new Image("/diamond.png");
+        Image diamond = new Image("/diamonds.png");
         ImageView imageViewDiamond = new ImageView(diamond);
         imageViewDiamond.setEffect(dropShadow);
         imageViewDiamond.setFitWidth(100);

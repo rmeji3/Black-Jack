@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BlackJack extends Application {
@@ -82,6 +83,16 @@ public class BlackJack extends Application {
 	//feel free to remove the starter code from this method
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
+		BlackjackDealer blackjackDealer = new BlackjackDealer();
+		BlackjackGameLogic blackjackGameLogic = new BlackjackGameLogic();
+		BlackjackGame blackjackGame = new BlackjackGame();
+		blackjackDealer.shuffleDeck();
+//		System.out.println(blackjackDealer.deckSize());
+//		for(int i = 0; i < 52; i++){
+//			Card c = blackjackDealer.drawOne();
+//			System.out.println("suit: " + c.getSuit() + " value: " + c.getValue() + " royalty: " + c.getRoyalty());
+//		}
 		primaryStage.setTitle("Black Jack");
 		sceneMap = new HashMap<>();
 
@@ -90,6 +101,9 @@ public class BlackJack extends Application {
 
 		PlaceBetScene placeBetScene = new PlaceBetScene();
 		sceneMap.put(placeBetScene.name, placeBetScene.getScene());
+
+		GameScene gameScene = new GameScene();
+		sceneMap.put(gameScene.name, gameScene.getScene());
 
 		RoundOverScene roundOverScene = new RoundOverScene();
 		sceneMap.put(roundOverScene.name, roundOverScene.getScene());
@@ -123,15 +137,31 @@ public class BlackJack extends Application {
 		placeBetScene.getBetButton().setOnAction(e->{
 			betAmountString = placeBetScene.getBetAmountField().getText();
 			if(startBet(betAmountString, placeBetScene))
-				primaryStage.setScene(sceneMap.get(startScene.name));
+				primaryStage.setScene(sceneMap.get(gameScene.name));
 		});
 		placeBetScene.getBetAmountField().setOnKeyPressed(e->{
 			if (e.getCode() == KeyCode.ENTER) {
 				betAmountString = placeBetScene.getBetAmountField().getText();
 				if(startBet(betAmountString, placeBetScene))
-					primaryStage.setScene(sceneMap.get(startScene.name));
+					primaryStage.setScene(sceneMap.get(gameScene.name));
 			}
 		});
+
+		gameScene.getHitButton().setOnAction(e->{
+			Card card = blackjackDealer.drawOne();
+			gameScene.getPlayerCardHbox().getChildren().add(card.getFrontCardContainer());
+			blackjackGame.addToPlayerHand(card);
+			ArrayList<Card> p1 = blackjackGame.getPlayerHand();
+			gameScene.setPlayerCount(Integer.toString(blackjackGameLogic.handTotal(p1)));
+		});
+		gameScene.getStandButton().setOnAction(e->{
+			Card card = blackjackDealer.drawOne();
+			gameScene.getCpuCardHbox().getChildren().add(card.getFrontCardContainer());
+			blackjackGame.addToBankerHand(card);
+			ArrayList<Card> p2 = blackjackGame.getBankerHand();
+			gameScene.setDealerCount(Integer.toString(blackjackGameLogic.handTotal(p2)));
+		});
+
 		primaryStage.setScene(sceneMap.get(startScene.name));
 		primaryStage.show();
 	}

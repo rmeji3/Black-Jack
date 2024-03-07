@@ -57,7 +57,7 @@ public class RoundOverScene {
         alignRowInGridPane(outsideWrapper, 2, HPos.CENTER, VPos.BOTTOM);
 
 
-        roundOverScene = new Scene(outsideWrapper, 800, 800);
+        roundOverScene = new Scene(outsideWrapper, 1300, 1000);
 
     }
 

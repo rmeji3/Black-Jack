@@ -54,7 +54,7 @@ public class PlaceBetScene {
         alignRowInGridPane(outsideWrapper, 2, HPos.CENTER, VPos.BOTTOM);
 
 
-        placeBetScene = new Scene(outsideWrapper, 800, 800);
+        placeBetScene = new Scene(outsideWrapper, 1300, 1000);
 
     }
 
