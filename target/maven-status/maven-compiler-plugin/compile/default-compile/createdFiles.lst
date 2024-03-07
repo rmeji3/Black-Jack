@@ -1,3 +1,5 @@
 StartScene.class
+RoundOverScene.class
 BlackJack.class
+LoseScene.class
 PlaceBetScene.class

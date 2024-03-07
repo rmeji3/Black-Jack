@@ -3,19 +3,20 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-
-public class PlaceBetScene {
-    private final Scene placeBetScene;
+public class RoundOverScene {
+    private final Scene roundOverScene;
     private GridPane outsideWrapper;
 
-    public String name = "place bet scene";
+    public String name = "round over scene";
 
     private BorderPane textWrapper;
 
@@ -23,14 +24,16 @@ public class PlaceBetScene {
 
     private BorderPane textFieldBtnWrapper;
 
-    private TextField betAmountField;
-    private Button betButton;
+    private Button quitButton;
+    private Button continueButton;
+
+    private Label earningsLabel;
 
     private final DropShadow dropShadow;
 
     private Label totalFundsLabel;
 
-    public PlaceBetScene() {
+    public RoundOverScene() {
 
         dropShadow = new DropShadow();
         dropShadow.setRadius(10.0);
@@ -40,7 +43,7 @@ public class PlaceBetScene {
 
         outsideWrapper = setOutsideWrapper();
         textWrapper = setTextWrapper();
-        textFieldBtnWrapper = setTextFieldBtnWrapper();
+        textFieldBtnWrapper = setLabelBtnsWrapper();
         bankWrapper = setBankWrapper();
 
 
@@ -54,7 +57,7 @@ public class PlaceBetScene {
         alignRowInGridPane(outsideWrapper, 2, HPos.CENTER, VPos.BOTTOM);
 
 
-        placeBetScene = new Scene(outsideWrapper, 800, 800);
+        roundOverScene = new Scene(outsideWrapper, 800, 800);
 
     }
 
@@ -76,8 +79,8 @@ public class PlaceBetScene {
         outsideWrapper.setStyle("-fx-background-color:" + BlackJack.black + ";");
 
         RowConstraints title = createRow(45);
-        RowConstraints btnTextField = createRow(30);
-        RowConstraints bottom = createRow(25);
+        RowConstraints btnTextField = createRow(40);
+        RowConstraints bottom = createRow(15);
 
         outsideWrapper.getRowConstraints().addAll(title, btnTextField, bottom);
 
@@ -86,7 +89,7 @@ public class PlaceBetScene {
 
     private BorderPane setTextWrapper() {
         textWrapper = new BorderPane();
-        Label textLabel = new Label("Place Bet");
+        Label textLabel = new Label("Round\n Over");
 
         textLabel.setEffect(dropShadow);
 
@@ -94,9 +97,9 @@ public class PlaceBetScene {
         textLabel.setAlignment(Pos.CENTER);
         textLabel.setStyle(
                 "-fx-text-fill: " + BlackJack.gold + ";" +
-                "-fx-font-family: Inter;" +
-                "-fx-font-size: 100;" +
-                "-fx-font-weight: bolder;"
+                        "-fx-font-family: Inter;" +
+                        "-fx-font-size: 100;" +
+                        "-fx-font-weight: bolder;"
         );
 
         textWrapper.setCenter(textLabel);
@@ -109,26 +112,31 @@ public class PlaceBetScene {
         return row;
     }
 
-    private BorderPane setTextFieldBtnWrapper() {
+    private BorderPane setLabelBtnsWrapper() {
         textFieldBtnWrapper = new BorderPane();
 
-        betAmountField = new TextField();
-        betAmountField.setEffect(dropShadow);
+        earningsLabel = new Label("Earnings: ");
+        earningsLabel.setEffect(dropShadow);
 
 
-        betButton = new Button("Bet");
-        betButton.setEffect(dropShadow);
-        betButton.setOnMouseEntered(event -> betButton.setCursor(Cursor.HAND));
-        betButton.setOnMouseExited(event -> betButton.setCursor(Cursor.DEFAULT));
+        continueButton = new Button("Continue");
+        continueButton.setEffect(dropShadow);
+        continueButton.setOnMouseEntered(event -> continueButton.setCursor(Cursor.HAND));
+        continueButton.setOnMouseExited(event -> continueButton.setCursor(Cursor.DEFAULT));
 
-        VBox vbox = new VBox(20, betAmountField, betButton);
+        quitButton = new Button();
+        quitButton.setEffect(dropShadow);
+        quitButton.setOnMouseEntered(event -> quitButton.setCursor(Cursor.HAND));
+        quitButton.setOnMouseExited(event -> quitButton.setCursor(Cursor.DEFAULT));
 
-        betAmountField.setPromptText("Bet Amount");
+        VBox vbox = new VBox(20,earningsLabel, continueButton, quitButton);
+
+        quitButton.setText("Quit");
         vbox.setAlignment(Pos.CENTER);
 
         textFieldBtnWrapper.setCenter(vbox);
 
-        betAmountField.setStyle(
+        earningsLabel.setStyle(
                 "-fx-min-height: 86;" +
                 "-fx-max-width: 340;" +
                 "-fx-prompt-text-fill:" + BlackJack.gold + ";" +
@@ -141,21 +149,35 @@ public class PlaceBetScene {
                 "-fx-font-size: 30;" +
                 "-fx-text-fill: " + BlackJack.gold + ";"
         );
-        betButton.setPrefHeight(86);
-        betButton.setMinHeight(86);
-        betButton.setMaxHeight(86);
-        betButton.setStyle(
+
+        continueButton.setPrefHeight(86);
+        continueButton.setMinHeight(86);
+        continueButton.setMaxHeight(86);
+        continueButton.setStyle(
                 "-fx-padding: 0;" +
                 "-fx-min-width: 340;" +
                 "-fx-background-color: " + BlackJack.gold + ";" +
                 "-fx-alignment: center;" +
                 "-fx-background-radius: 40px; " +
                 "-fx-font-family: Inter;" +
-                "-fx-font-size: 61;" +
+                "-fx-font-size: 51;" +
                 "-fx-text-fill: " + BlackJack.black + ";" +
                 "-fx-font-weight: bolder;"
         );
 
+        quitButton.setStyle(
+                "-fx-min-height: 86;" +
+                "-fx-max-width: 340;" +
+                "-fx-prompt-text-fill:" + BlackJack.gold + ";" +
+                "-fx-background-color: " + BlackJack.black + ";" +
+                "-fx-alignment: center;" +
+                "-fx-border-radius: 40px; " +
+                "-fx-background-radius: 40px; " +
+                "-fx-border-color: " + BlackJack.gold + ";" +
+                "-fx-font-family: Inter;" +
+                "-fx-font-size: 30;" +
+                "-fx-text-fill: " + BlackJack.gold + ";"
+        );
         return textFieldBtnWrapper;
 
     }
@@ -172,17 +194,17 @@ public class PlaceBetScene {
 
         bankWrapper.setStyle(
                 "-fx-border-radius: 20px 20px 0px 0px;" +
-                "-fx-background-radius: 40px;" +
-                "-fx-background-color: " + BlackJack.black + ";"+
-                "-fx-border-color: " + BlackJack.gold + ";"+
-                "-fx-border-width: 1 1 0 1;"
+                        "-fx-background-radius: 40px;" +
+                        "-fx-background-color: " + BlackJack.black + ";"+
+                        "-fx-border-color: " + BlackJack.gold + ";"+
+                        "-fx-border-width: 1 1 0 1;"
         );
 
         totalFundsLabel = new Label("Bank: ");
         totalFundsLabel.setStyle(
                 "-fx-text-fill: " + BlackJack.gold + ";" +
-                "-fx-font-family: Inter;" +
-                "-fx-font-size: 18;"
+                        "-fx-font-family: Inter;" +
+                        "-fx-font-size: 18;"
         );
         bankWrapper.setCenter(totalFundsLabel);
 
@@ -191,16 +213,16 @@ public class PlaceBetScene {
 
 
     public Scene getScene(){
-        return placeBetScene;
+        return roundOverScene;
     }
-    public Button getBetButton(){
-        return betButton;
+    public Button getContinueButton(){
+        return continueButton;
     }
-    public TextField getBetAmountField(){
-        return betAmountField;
-    }
+    public Button getQuitButton(){return quitButton;}
+    public Label getEarningsLabel(){return earningsLabel;}
 
     public Label getBankLabel(){
         return totalFundsLabel;
     }
+
 }

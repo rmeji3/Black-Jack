@@ -86,10 +86,16 @@ public class BlackJack extends Application {
 		sceneMap = new HashMap<>();
 
 		StartScene startScene = new StartScene();
-		sceneMap.put("start scene", startScene.getScene());
+		sceneMap.put(startScene.name, startScene.getScene());
 
 		PlaceBetScene placeBetScene = new PlaceBetScene();
-		sceneMap.put("place bet scene", placeBetScene.getScene());
+		sceneMap.put(placeBetScene.name, placeBetScene.getScene());
+
+		RoundOverScene roundOverScene = new RoundOverScene();
+		sceneMap.put(roundOverScene.name, roundOverScene.getScene());
+
+		LoseScene loseScene = new LoseScene();
+		sceneMap.put(loseScene.name, loseScene.getScene());
 
 
 
@@ -99,7 +105,7 @@ public class BlackJack extends Application {
 			if(startButtonListener(startingAmountString, startScene))
 			{
 				placeBetScene.getBankLabel().setText("Bank: " + startingAmountString);
-				primaryStage.setScene(sceneMap.get("place bet scene"));
+				primaryStage.setScene(sceneMap.get(placeBetScene.name));
 			}
 		});
 		startScene.getStartingAmount().setOnKeyPressed(e->{
@@ -108,7 +114,7 @@ public class BlackJack extends Application {
 				if(startButtonListener(startingAmountString, startScene))
 				{
 					placeBetScene.getBankLabel().setText("Bank: " + startingAmountString);
-					primaryStage.setScene(sceneMap.get("place bet scene"));
+					primaryStage.setScene(sceneMap.get(placeBetScene.name));
 				}
 
 			}
@@ -117,16 +123,16 @@ public class BlackJack extends Application {
 		placeBetScene.getBetButton().setOnAction(e->{
 			betAmountString = placeBetScene.getBetAmountField().getText();
 			if(startBet(betAmountString, placeBetScene))
-				primaryStage.setScene(sceneMap.get("start scene"));
+				primaryStage.setScene(sceneMap.get(startScene.name));
 		});
 		placeBetScene.getBetAmountField().setOnKeyPressed(e->{
 			if (e.getCode() == KeyCode.ENTER) {
 				betAmountString = placeBetScene.getBetAmountField().getText();
 				if(startBet(betAmountString, placeBetScene))
-					primaryStage.setScene(sceneMap.get("start scene"));
+					primaryStage.setScene(sceneMap.get(startScene.name));
 			}
 		});
-		primaryStage.setScene(sceneMap.get("start scene"));
+		primaryStage.setScene(sceneMap.get(startScene.name));
 		primaryStage.show();
 	}
 }

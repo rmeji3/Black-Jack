@@ -1,6 +1,5 @@
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
@@ -11,22 +10,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-import java.util.Objects;
 
 public class StartScene {
-    Scene startScene;
-    GridPane outsideWrapper;
+    private final Scene startScene;
+    private GridPane outsideWrapper;
 
-    BorderPane textWrapper;
+    public String name = "start scene";
 
-    BorderPane iconWrapper;
+    private BorderPane textWrapper;
 
-    BorderPane textFieldBtnWrapper;
+    private BorderPane iconWrapper;
 
-    TextField startingAmount;
-    Button startButton;
+    private BorderPane textFieldBtnWrapper;
 
-    DropShadow dropShadow;
+    private TextField startingAmount;
+    private Button startButton;
+
+    private final DropShadow dropShadow;
 
     public StartScene(){
 
@@ -149,10 +149,10 @@ public class StartScene {
         startingAmount = new TextField();
         startingAmount.setEffect(dropShadow);
 
-
-
         startButton = new Button("Start");
         startButton.setEffect(dropShadow);
+        startButton.setOnMouseEntered(event -> startButton.setCursor(Cursor.HAND));
+        startButton.setOnMouseExited(event -> startButton.setCursor(Cursor.DEFAULT));
 
         VBox vbox = new VBox(20, startingAmount, startButton);
 
