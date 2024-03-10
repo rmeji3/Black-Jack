@@ -61,10 +61,11 @@ public class Card {
         else if (royalty == 3){
             cardNum.setText("J");
         }
-        else if (value == 11){
+        else if (value == 11 || value == 1){
             cardNum.setText("A");
         }
     }
+
     private BorderPane createFrontCard(){
         frontCardContainer = new BorderPane();
         suitImage = new Image("/"+suit+".png");

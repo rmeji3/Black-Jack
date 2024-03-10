@@ -54,7 +54,7 @@ public class PlaceBetScene {
         alignRowInGridPane(outsideWrapper, 2, HPos.CENTER, VPos.BOTTOM);
 
 
-        placeBetScene = new Scene(outsideWrapper, 1300, 1000);
+        placeBetScene = new Scene(outsideWrapper, 1600, 1000);
 
     }
 
@@ -200,7 +200,7 @@ public class PlaceBetScene {
         return betAmountField;
     }
 
-    public Label getBankLabel(){
-        return totalFundsLabel;
+    public void setTotalFundsLabel(double totalFunds){
+        totalFundsLabel.setText(String.format("Bank: $%.2f", totalFunds));
     }
 }

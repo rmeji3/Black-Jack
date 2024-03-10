@@ -50,7 +50,7 @@ public class StartScene {
         outsideWrapper.setAlignment(Pos.CENTER);
 
 
-        startScene = new Scene(outsideWrapper, 1300, 1000);
+        startScene = new Scene(outsideWrapper, 1600, 1000);
 
     }
 

@@ -35,6 +35,11 @@
         <artifactId>javafx-fxml</artifactId>
         <version>19.0.2.1</version>
     </dependency>
+     <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-math3</artifactId>
+         <version>3.6.1</version>
+     </dependency>
 
     
     
@@ -48,8 +53,12 @@
             <version>2.22.1</version>
         </plugin>
 
+
+
     </plugins>
 </build>
+
+
  
    
   

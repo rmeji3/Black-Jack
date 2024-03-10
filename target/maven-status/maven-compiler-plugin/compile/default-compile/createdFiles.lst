@@ -4,6 +4,7 @@ BlackJack.class
 LoseScene.class
 PlaceBetScene.class
 GameScene.class
+Main.class
 StartScene.class
 RoundOverScene.class
 Card.class

@@ -78,7 +78,7 @@ public class GameScene {
 
 
 
-        gameScene = new Scene(outsideWrapper, 1300, 1000);
+        gameScene = new Scene(outsideWrapper, 1600, 1000);
 
     }
 
@@ -148,7 +148,11 @@ public class GameScene {
         middleHbox.setSpacing(20);
         middleHbox.setStyle("-fx-background-color: " + BlackJack.black + ";");
         hitButton = new Button("Hit");
+        hitButton.setOnMouseEntered(event -> hitButton.setCursor(Cursor.HAND));
+        hitButton.setOnMouseExited(event -> hitButton.setCursor(Cursor.DEFAULT));
         standButton = new Button("Stand");
+        standButton.setOnMouseEntered(event -> standButton.setCursor(Cursor.HAND));
+        standButton.setOnMouseExited(event -> standButton.setCursor(Cursor.DEFAULT));
         betLabel = new Label("$1");
 
 
@@ -184,7 +188,7 @@ public class GameScene {
             "-fx-background-radius: 40px; " +
             "-fx-border-color: " + BlackJack.gold + ";" +
             "-fx-font-family: Inter;" +
-            "-fx-font-size: 32;" +
+            "-fx-font-size: 22;" +
             "-fx-text-fill: " + BlackJack.gold + ";" +
             "-fx-font-weight: bolder;"
         );
@@ -283,6 +287,18 @@ public class GameScene {
 
     public void setPlayerCount(String amount){playerCount.setText(amount);}
 
-    public void setBetLabel(String bet){betLabel.setText(bet);}
+
+    public void setBetLabel(double bet){betLabel.setText(String.format("$%.2f",bet) );}
     public Scene getScene(){return gameScene;}
+
+    public void setTotalFundsLabel(double totalFunds){
+        totalFundsLabel.setText(String.format("Bank: $%.2f", totalFunds));
+    }
+    public int getPlayerCount(){
+        return Integer.parseInt(playerCount.getText());
+    }
+    public int getDealerCount(){
+        return Integer.parseInt(dealerCount.getText());
+    }
+
 }

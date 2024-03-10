@@ -57,7 +57,7 @@ public class RoundOverScene {
         alignRowInGridPane(outsideWrapper, 2, HPos.CENTER, VPos.BOTTOM);
 
 
-        roundOverScene = new Scene(outsideWrapper, 1300, 1000);
+        roundOverScene = new Scene(outsideWrapper, 1600, 1000);
 
     }
 
@@ -142,9 +142,7 @@ public class RoundOverScene {
                 "-fx-prompt-text-fill:" + BlackJack.gold + ";" +
                 "-fx-background-color: " + BlackJack.black + ";" +
                 "-fx-alignment: center;" +
-                "-fx-border-radius: 40px; " +
                 "-fx-background-radius: 40px; " +
-                "-fx-border-color: " + BlackJack.gold + ";" +
                 "-fx-font-family: Inter;" +
                 "-fx-font-size: 30;" +
                 "-fx-text-fill: " + BlackJack.gold + ";"
@@ -219,10 +217,12 @@ public class RoundOverScene {
         return continueButton;
     }
     public Button getQuitButton(){return quitButton;}
-    public Label getEarningsLabel(){return earningsLabel;}
+    public void setEarningsLabel(double earnings){
+        earningsLabel.setText(String.format("$%.2f", earnings));
+    }
 
-    public Label getBankLabel(){
-        return totalFundsLabel;
+    public void setTotalFundsLabel(double totalFunds){
+        totalFundsLabel.setText(String.format("Bank: $%.2f", totalFunds));
     }
 
 }

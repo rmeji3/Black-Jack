@@ -35,22 +35,23 @@ public class BlackjackDealer {
         deck.clear();
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j <= 13; j++) {
-                if(j < 10){
+                if (j == 1){
+                    addCard(i, 11, 0);
+                }
+                if(j <= 10){
                     addCard(i, j, 0);
                     continue;
                 }
-                if(j == 13)
-                    addCard(i, 11, 0);
                 else
-                    addCard(i, 10, j+1 - 10);
+                    addCard(i, 10, j - 10);
 
             }
         }
     }
-    // king = 10
-    // queen = 11
-    // jack = 12
-    // ace = 13
+    // king = 11
+    // queen = 12
+    // jack = 13
+    // ace = 1
     // if val >= 10 < 13, val = 10
     public ArrayList<Card> dealHand() {
         // Deal a hand of cards

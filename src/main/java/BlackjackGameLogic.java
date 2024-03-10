@@ -29,7 +29,18 @@ public class BlackjackGameLogic {
     public int handTotal(ArrayList<Card> hand){
         int handTotal = 0;
         for(Card c : hand){
-            handTotal += c.getValue();
+            if(c.isShow()) {
+                handTotal += c.getValue();
+            }
+        }
+        if(handTotal > 21)
+        {
+            for(Card c : hand){
+                if(c.isShow() && c.getValue() == 11){
+                    c.setValue(1);
+                    handTotal -= 10;
+                }
+            }
         }
         return handTotal;
     }

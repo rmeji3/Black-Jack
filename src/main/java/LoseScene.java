@@ -48,7 +48,7 @@ public class LoseScene {
 
 
 
-        loseScene = new Scene(outsideWrapper, 1300, 1000);
+        loseScene = new Scene(outsideWrapper, 1600, 1000);
 
     }
 
