@@ -38,9 +38,8 @@ public class BlackjackDealer {
                 if (j == 1){
                     addCard(i, 11, 0);
                 }
-                if(j <= 10){
+                else if(j <= 10){
                     addCard(i, j, 0);
-                    continue;
                 }
                 else
                     addCard(i, 10, j - 10);
@@ -72,4 +71,9 @@ public class BlackjackDealer {
         // Return the number of cards left in the deck
         return deck.size();
     }
+    public ArrayList<Card> getDeck(){
+        return deck;
+    }
+
+
 }

@@ -19,14 +19,14 @@ public class BlackJack extends Application {
 
 	static double totalFunds = 0;
 
-	static double betAmount;
+//	static double betAmount;
 	static String startingAmountString;
 
 	static String betAmountString;
 	private HashMap<String,Scene> sceneMap;
 	BlackjackDealer blackjackDealer;
 	BlackjackGameLogic blackjackGameLogic;
-	BlackjackGame blackjackGame;
+	static BlackjackGame blackjackGame;
 	GameScene gameScene;
 	StartScene startScene;
 	PlaceBetScene placeBetScene;
@@ -34,23 +34,25 @@ public class BlackJack extends Application {
 	LoseScene loseScene;
 
 
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		launch(args);
 	}
 	private static boolean startButtonListener(String startingAmountString, StartScene startScene){
-		if (startingAmountString.isEmpty()){
+		if(startingAmountString.isEmpty()){
 			startScene.getStartingAmount().setPromptText("Enter a valid number");
 			return false;
 		}
-		for(int i = 0; i < startingAmountString.length(); i++) {
-			if(!Character.isDigit(startingAmountString.charAt(i))){
-				startScene.getStartingAmount().clear();
-				startScene.getStartingAmount().setPromptText("Enter a valid number");
-				return false;
-			}
+		try{
+			totalFunds =  Double.parseDouble(startingAmountString);
+
+		}catch (NumberFormatException e){
+			startScene.getStartingAmount().clear();
+			startScene.getStartingAmount().setPromptText("Enter a valid number");
+			return false;
 		}
-		totalFunds =  Double.parseDouble(startingAmountString);
+
 		if (totalFunds <= 0) {
 			startScene.getStartingAmount().clear();
 			startScene.getStartingAmount().setPromptText("Enter a valid number");
@@ -67,42 +69,38 @@ public class BlackJack extends Application {
 			placeBetScene.getBetAmountField().setPromptText("Enter a valid number");
 			return false;
 		}
-		for(int i = 0; i < betAmountString.length(); i++) {
-			if(!Character.isDigit(betAmountString.charAt(i))){
-				placeBetScene.getBetAmountField().clear();
-				placeBetScene.getBetAmountField().setPromptText("Enter a valid number");
-				return false;
-			}
-		}
-		betAmount =  Double.parseDouble(betAmountString);
-		if (betAmount <= 0){
+
+
+		try {
+			blackjackGame.currentBet = Double.parseDouble(betAmountString);
+		} catch (NumberFormatException e) {
 			placeBetScene.getBetAmountField().clear();
 			placeBetScene.getBetAmountField().setPromptText("Enter a valid number");
 			return false;
 		}
-		else if(totalFunds < 0 || totalFunds < betAmount)
-		{
+
+		if (blackjackGame.currentBet <= 0){
+			placeBetScene.getBetAmountField().clear();
+			placeBetScene.getBetAmountField().setPromptText("Enter a valid number");
+			return false;
+		}
+		else if(totalFunds < 0 || totalFunds < blackjackGame.currentBet) {
 			placeBetScene.getBetAmountField().clear();
 			placeBetScene.getBetAmountField().setPromptText("Not enough funds");
 			return false;
 		}
 
-
 		return true;
-
-
 	}
 
+
 	public void startGame(ArrayList<Card> playerDeck, ArrayList<Card> dealerDeck){
-		Card card = blackjackDealer.drawOne();
-		playerDeck.add(card);
-		gameScene.getPlayerCardHbox().getChildren().add(card.getFrontCardContainer());
 
-		card = blackjackDealer.drawOne();
-		playerDeck.add(card);
-		gameScene.getPlayerCardHbox().getChildren().add(card.getFrontCardContainer());
+		for(Card c : playerDeck){
+			gameScene.getPlayerCardHbox().getChildren().add(c.getFrontCardContainer());
+		}
 
-
+		Card card;
 		card = blackjackDealer.drawOne();
 		dealerDeck.add(card);
 		card.setShow(false);
@@ -120,7 +118,7 @@ public class BlackJack extends Application {
 		ArrayList<Card> bankerHand = blackjackGame.getBankerHand();
 		gameScene.setDealerCount(Integer.toString(blackjackGameLogic.handTotal(bankerHand)));
 
-		while(blackjackGameLogic.handTotal(bankerHand) < 17) {
+		while(blackjackGameLogic.evaluateBankerDraw(bankerHand)) {
 			Card card = blackjackDealer.drawOne();
 			blackjackGame.addToBankerHand(card);
 			gameScene.getCpuCardHbox().getChildren().add(card.getFrontCardContainer());
@@ -138,36 +136,34 @@ public class BlackJack extends Application {
 		gameScene.getHitButton().setDisable(false);
 
 	}
-	public Scene checkResult(String result){
-		boolean playerNatural = blackjackGameLogic.handTotal(blackjackGame.getPlayerHand()) == 21 && blackjackGame.getPlayerHand().size() == 2;
-		resetGame();
-		switch(result){
-			case "player":
-				if(playerNatural) {
-					totalFunds += betAmount * 1.5 + betAmount;
-					betAmount *= 1.5;
-				}
-				else
-					totalFunds += betAmount * 2;
-				roundOverScene.setEarningsLabel(betAmount);
-				roundOverScene.setTotalFundsLabel(totalFunds);
-				return roundOverScene.getScene();
-			case "dealer":
-				if(totalFunds <= 0)
-				{
-					return loseScene.getScene();
-				}
-				roundOverScene.setEarningsLabel(-betAmount);
-				roundOverScene.setTotalFundsLabel(totalFunds);
-				return roundOverScene.getScene();
-			case "push":
-				roundOverScene.setEarningsLabel(0);
-				totalFunds += betAmount;
-				roundOverScene.setTotalFundsLabel(totalFunds);
-				return roundOverScene.getScene();
-			default:
-				return null;
+	public Scene checkResult(){
+
+		double earnings = blackjackGame.evaluateWinnings();
+		if(earnings > 0) {
+			totalFunds += earnings + blackjackGame.currentBet;
+			roundOverScene.setEarningsLabel(earnings);
+			roundOverScene.setTotalFundsLabel(totalFunds);
+			resetGame();
+			return roundOverScene.getScene();
 		}
+		else if(earnings < 0) {
+			roundOverScene.setEarningsLabel(earnings);
+			roundOverScene.setTotalFundsLabel(totalFunds);
+			if(totalFunds <= 0) {
+				resetGame();
+				return loseScene.getScene();
+
+			}
+			resetGame();
+			return roundOverScene.getScene();
+		}
+
+		roundOverScene.setEarningsLabel(0);
+		totalFunds += blackjackGame.currentBet;
+		roundOverScene.setTotalFundsLabel(totalFunds);
+		resetGame();
+		return roundOverScene.getScene();
+
 	}
 
 	//feel free to remove the starter code from this method
@@ -221,10 +217,11 @@ public class BlackJack extends Application {
 			betAmountString = placeBetScene.getBetAmountField().getText();
 			if(startBet(betAmountString, placeBetScene)) {
 				primaryStage.setScene(gameScene.getScene());
+				blackjackGame.playerHand = blackjackDealer.dealHand();
 				startGame(blackjackGame.getPlayerHand(),blackjackGame.getBankerHand());
-				totalFunds -= betAmount;
+				totalFunds -= blackjackGame.currentBet;
 				gameScene.setTotalFundsLabel(totalFunds);
-				gameScene.setBetLabel(betAmount);
+				gameScene.setBetLabel(blackjackGame.currentBet);
 			}
 		});
 		placeBetScene.getBetAmountField().setOnKeyPressed(e->{
@@ -232,9 +229,10 @@ public class BlackJack extends Application {
 				betAmountString = placeBetScene.getBetAmountField().getText();
 				if(startBet(betAmountString, placeBetScene)) {
 					primaryStage.setScene(gameScene.getScene());
+					blackjackGame.playerHand = blackjackDealer.dealHand();
 					startGame(blackjackGame.getPlayerHand(),blackjackGame.getBankerHand());
 					gameScene.setTotalFundsLabel(totalFunds);
-					gameScene.setBetLabel(betAmount);
+					gameScene.setBetLabel(blackjackGame.currentBet);
 				}
 			}
 		});
@@ -243,10 +241,8 @@ public class BlackJack extends Application {
 			Card card = blackjackDealer.drawOne();
 			gameScene.getPlayerCardHbox().getChildren().add(card.getFrontCardContainer());
 			blackjackGame.addToPlayerHand(card);
-			ArrayList<Card> p1 = blackjackGame.getPlayerHand();
-			gameScene.setPlayerCount(Integer.toString(blackjackGameLogic.handTotal(p1)));
-			if (blackjackGameLogic.handTotal(p1) > 21) {
-				String result = blackjackGameLogic.whoWon(p1,blackjackGame.getBankerHand());
+			gameScene.setPlayerCount(Integer.toString(blackjackGameLogic.handTotal(blackjackGame.getPlayerHand())));
+			if (blackjackGameLogic.handTotal(blackjackGame.getPlayerHand()) > 21) {
 				ArrayList<Card> p2 = blackjackGame.getBankerHand();
 				Card hiddenCard = p2.get(0);
 				hiddenCard.setShow(true);
@@ -257,7 +253,7 @@ public class BlackJack extends Application {
 				PauseTransition pause = new PauseTransition(Duration.seconds(3));
 				pause.setOnFinished(event -> {
 					// Code to execute after the 2-second delay
-					primaryStage.setScene(checkResult(result));
+					primaryStage.setScene(checkResult());
 				});
 				pause.play(); // Start the pause
 
@@ -278,7 +274,7 @@ public class BlackJack extends Application {
 			PauseTransition pause = new PauseTransition(Duration.seconds(3));
 			pause.setOnFinished(event -> {
 				// Code to execute after the 2-second delay
-				primaryStage.setScene(checkResult(result));
+				primaryStage.setScene(checkResult());
 			});
 			pause.play(); // Start the pause
 		});

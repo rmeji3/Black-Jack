@@ -39,6 +39,7 @@ public class BlackjackGameLogic {
                 if(c.isShow() && c.getValue() == 11){
                     c.setValue(1);
                     handTotal -= 10;
+                    return handTotal;
                 }
             }
         }

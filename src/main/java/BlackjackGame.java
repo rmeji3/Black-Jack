@@ -3,28 +3,36 @@ import java.util.ArrayList;
 public class BlackjackGame {
     ArrayList<Card> playerHand;
     ArrayList<Card> bankerHand;
-    BlackjackDealer theDealer;
+
     BlackjackGameLogic gameLogic;
     double currentBet;
     double totalMoney;
     public BlackjackGame(){
         playerHand = new ArrayList<>();
         bankerHand = new ArrayList<>();
+        gameLogic = new BlackjackGameLogic();
     }
-    public double evaluteWinnings() {
+    public double evaluateWinnings() {
+        System.out.println("player: " + playerHand.size());
+        System.out.println(gameLogic.handTotal(playerHand));
+        System.out.println("banker: " + bankerHand.size());
         if (gameLogic.whoWon(playerHand, bankerHand).compareTo("player")== 0) {
             boolean playerNatural = gameLogic.handTotal(playerHand) == 21 && playerHand.size() == 2;
+            System.out.println("you win");
 
             if (playerNatural) {
                 totalMoney += currentBet * 1.5;
                 return currentBet * 1.5;
             }
+
             totalMoney += currentBet;
             return currentBet;
-        } else if (gameLogic.whoWon(playerHand, bankerHand).compareTo("banker") == 0) {
+        } else if (gameLogic.whoWon(playerHand, bankerHand).compareTo("dealer") == 0) {
             totalMoney -= currentBet;
+            System.out.println("you lose");
             return -currentBet;
         } else {
+            System.out.println("draw");
             return 0;
         }
     }

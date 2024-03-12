@@ -42,7 +42,7 @@ public class Card {
         checkRoyalty();
     }
     public void setRoyalty(int royalty){
-       this.royalty = royalty;
+        this.royalty = royalty;
     }
     public int getRoyalty(){
         return royalty;
@@ -90,23 +90,23 @@ public class Card {
 
         frontCardContainer.setStyle(
                 "-fx-border-width: 5;" +
-                "-fx-border-radius: 15;" +
-                "-fx-background-color: " + BlackJack.black + ";"+
-                "-fx-border-color: " +  BlackJack.gold + ";"
+                        "-fx-border-radius: 15;" +
+                        "-fx-background-color: " + BlackJack.black + ";"+
+                        "-fx-border-color: " +  BlackJack.gold + ";"
         );
         //ADD MARGIN TO LEFT
 
         cardNum.setStyle(
                 "-fx-text-fill: " + BlackJack.gold + ";"+
-                "-fx-font-family: Inter;"+
-                "-fx-font-size: 55;" +
-                "-fx-font-weight: bold;"
+                        "-fx-font-family: Inter;"+
+                        "-fx-font-size: 55;" +
+                        "-fx-font-weight: bold;"
         );
         numBox.setStyle("-fx-padding: 0 0 0 12");
         picBox.setStyle(
 //                "-fx-border-color: white;"+
                 "-fx-padding: 0 0 60 0;"
-                );
+        );
 
 
         frontCardContainer.setCenter(picBox);
@@ -129,9 +129,9 @@ public class Card {
 
         backCardContainer.setStyle(
                 "-fx-border-width: 10;" +
-                "-fx-border-radius: 15;" +
-                "-fx-background-color: " + BlackJack.black + ";"+
-                "-fx-border-color: " +  BlackJack.gold + ";"
+                        "-fx-border-radius: 15;" +
+                        "-fx-background-color: " + BlackJack.black + ";"+
+                        "-fx-border-color: " +  BlackJack.gold + ";"
         );
 
         backCardContainerInner.setPrefHeight(225);
@@ -142,9 +142,9 @@ public class Card {
         backCardContainerInner.setMaxWidth(133);
         backCardContainerInner.setStyle(
                 "-fx-border-width: 5;" +
-                "-fx-border-radius: 15;" +
-                "-fx-background-color: transparent;"+
-                "-fx-border-color: " +  BlackJack.gold + ";"
+                        "-fx-border-radius: 15;" +
+                        "-fx-background-color: transparent;"+
+                        "-fx-border-color: " +  BlackJack.gold + ";"
         );
 
         backCardContainer.setCenter(backCardContainerInner);
